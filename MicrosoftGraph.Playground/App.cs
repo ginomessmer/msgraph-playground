@@ -3,6 +3,7 @@ using Microsoft.Graph;
 using MicrosoftGraph.Playground.Data;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static MicrosoftGraph.Playground.AppHelper;
 using static System.Console;
@@ -36,7 +37,7 @@ namespace MicrosoftGraph.Playground
             var users = await AppHelper.GetGraphServiceClient().Users.Request().GetAsync();
 
             WriteObject(users);
-            SerializeToFile(users, "users.json");
+            SerializeToFile(users, "users.playground.json");
         }
 
         public async Task GetGroups()
@@ -44,7 +45,33 @@ namespace MicrosoftGraph.Playground
             var groups = await AppHelper.GetGraphServiceClient().Groups.Request().GetAsync();
 
             WriteObject(groups);
-            SerializeToFile(groups, "groups.json");
+            SerializeToFile(groups, "groups.playground.json");
+        }
+
+        public async Task GetExtensionsByUser(string principalName)
+        {
+            var extensions = await AppHelper.GetGraphServiceClient().Users[principalName].Extensions.Request().GetAsync();
+
+            WriteObject(extensions);
+            SerializeToFile(extensions, "extensions.playground.json");
+        }
+
+        public async Task AddExtensionToUser(string principalName, string extensionName, string key, string value)
+        {
+            var extension = new OpenTypeExtension
+            {
+                ExtensionName = extensionName,
+                AdditionalData = new Dictionary<string, object>()
+                {
+                    { key, value }
+                }
+            };
+
+            await AppHelper.GetGraphServiceClient().Users[principalName].Extensions.Request().AddAsync(extension);
+
+            ForegroundColor = ConsoleColor.Green;
+            WriteLine($"Successfully added extension {key}.");
+            ResetColor();
         }
     }
 }
