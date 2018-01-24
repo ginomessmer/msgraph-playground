@@ -1,12 +1,20 @@
-﻿using System;
+﻿using CommandDotNet;
+using CommandDotNet.Models;
+using System;
+using static System.Console;
 
 namespace MicrosoftGraph.Playground
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            AppRunner<App> app = new AppRunner<App>(new AppSettings
+            {
+                Case = Case.KebabCase
+            });
+
+            return app.Run(args);
         }
     }
 }
