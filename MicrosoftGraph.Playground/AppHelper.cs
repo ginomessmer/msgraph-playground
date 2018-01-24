@@ -16,7 +16,7 @@ namespace MicrosoftGraph.Playground
             string json = JsonConvert.SerializeObject(target, Formatting.Indented);
             System.IO.File.WriteAllText(path, json);
 
-            ForegroundColor = ConsoleColor.DarkYellow;
+            ForegroundColor = ConsoleColor.Blue;
             WriteLine($"Result serialized to: {path}");
             ResetColor();
         }
@@ -30,6 +30,11 @@ namespace MicrosoftGraph.Playground
             }
             else
                 return default(T);
+        }
+
+        public static void WriteObject(object target)
+        {
+            WriteLine(JsonConvert.SerializeObject(target, Formatting.Indented));
         }
 
         public static GraphServiceClient GetGraphServiceClient()

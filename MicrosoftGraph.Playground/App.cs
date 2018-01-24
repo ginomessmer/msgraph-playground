@@ -33,13 +33,18 @@ namespace MicrosoftGraph.Playground
 
         public async Task GetUsers()
         {
-            GraphServiceClient graphClient = AppHelper.GetGraphServiceClient();
-            var users = await graphClient.Users.Request().GetAsync();
+            var users = await AppHelper.GetGraphServiceClient().Users.Request().GetAsync();
 
-            WriteLine(JsonConvert.SerializeObject(users, Formatting.Indented));
+            WriteObject(users);
             SerializeToFile(users, "users.json");
-            
-            ResetColor();
+        }
+
+        public async Task GetGroups()
+        {
+            var groups = await AppHelper.GetGraphServiceClient().Groups.Request().GetAsync();
+
+            WriteObject(groups);
+            SerializeToFile(groups, "groups.json");
         }
     }
 }
