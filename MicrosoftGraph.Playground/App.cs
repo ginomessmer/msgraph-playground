@@ -1,12 +1,11 @@
 ﻿using CommandDotNet.Attributes;
 using Microsoft.Graph;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using System.Threading.Tasks;
-using static System.Console;
+using MicrosoftGraph.Playground.Data;
 using Newtonsoft.Json;
+using System;
+using System.Threading.Tasks;
+using static MicrosoftGraph.Playground.AppHelper;
+using static System.Console;
 
 namespace MicrosoftGraph.Playground
 {
@@ -20,12 +19,25 @@ namespace MicrosoftGraph.Playground
             ReadLine();
         }
 
-        public async Task GetUsers(string clientId, string clientSecret, string authority)
+        public async Task SetCredentials(string clientId, string clientSecret, string authority)
         {
-            var graphClient = new GraphServiceClient(new PlaygroundAuthProvider(clientId, clientSecret, authority));
+            var credentials = new ApiCredentials
+            {
+                ClientId = clientId,
+                ClientSecret = clientSecret,
+                AuthorityUrl = authority
+            };
+
+            SerializeToFile(credentials, "credentials.json");
+        }
+
+        public async Task GetUsers()
+        {
+            GraphServiceClient graphClient = AppHelper.GetGraphServiceClient();
             var users = await graphClient.Users.Request().GetAsync();
 
             WriteLine(JsonConvert.SerializeObject(users, Formatting.Indented));
+            SerializeToFile(users, "users.json");
             
             ResetColor();
         }
