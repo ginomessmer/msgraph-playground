@@ -40,6 +40,23 @@ namespace MicrosoftGraph.Playground
             SerializeToFile(users, "users.playground.json");
         }
 
+        public async Task GetSingleUser(string principalName)
+        {
+            var user = await AppHelper.GetGraphServiceClient().Users[principalName].Request().GetAsync();
+
+            WriteObject(user);
+            SerializeToFile(user, "user.playground.json");
+        }
+
+        public async Task GetPhotoOfUser(string principalName)
+        {
+            var user = await AppHelper.GetGraphServiceClient().Users[principalName].Request().GetAsync();
+            var photo = user.Photo;
+
+            WriteObject(photo);
+            SerializeToFile(photo, "user-photo.playground.json");
+        }
+
         public async Task GetGroups()
         {
             var groups = await AppHelper.GetGraphServiceClient().Groups.Request().GetAsync();
