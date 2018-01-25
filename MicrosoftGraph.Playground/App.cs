@@ -67,11 +67,17 @@ namespace MicrosoftGraph.Playground
                 }
             };
 
-            await AppHelper.GetGraphServiceClient().Users[principalName].Extensions.Request().AddAsync(extension);
+            var finalExtension = await AppHelper.GetGraphServiceClient().Users[principalName].Extensions.Request().AddAsync(extension);
 
             ForegroundColor = ConsoleColor.Green;
             WriteLine($"Successfully added extension {key}.");
             ResetColor();
+            WriteObject(finalExtension);
+        }
+
+        public async Task UpdateExtensionFromUser(string principalName, string extensionName)
+        {
+            throw new NotImplementedException();
         }
     }
 }
